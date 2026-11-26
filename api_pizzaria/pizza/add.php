@@ -1,6 +1,5 @@
 <?php
 
-// Headers
 
 header('Access-Control-Allow-Origin: *');
 
@@ -10,7 +9,6 @@ header('Access-Control-Allow-Methods: POST');
 
 
 include_once '../../Config/Database.php';
-
 include_once '../../Models/Pizza.php';
 
 
@@ -18,31 +16,18 @@ use Apipizza\Config\Database;
 use Apipizza\Models\Pizza;
 
 
-// Instanciar o banco de dados e conectar
-
 $database = new Database();
 
 $db = $database->getConnection();
 
-
-
-// Instanciar o objeto Pizza
-
 $pizza = new Pizza($db);
-
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     try {
 
-        // Obter os dados postados
-
         $data = json_decode(file_get_contents("php://input"));
-
-
-
-        // Verificar se os dados não estão vazios
 
         if (
 
@@ -54,25 +39,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         ) {
 
-            // Atribuir os valores ao objeto Pizza
-
-            $pizza->nome = $data->nome;
+        $pizza->nome = $data->nome;
 
             $pizza->ingredientes = $data->ingredientes;
 
             $pizza->valor = $data->valor;
 
-
-
-            // Criar a pizza
-
             if ($pizza->add()) {
 
                 http_response_code(201);
 
-                // Resposta de sucesso
-
-                echo json_encode(
+          echo json_encode(
 
                     array('Mensagem' => 'Pizza Criada com Sucesso')
 
@@ -81,7 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 http_response_code(400);
 
-                // Resposta de erro
 
                 echo json_encode(
 
@@ -93,7 +69,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             http_response_code(400);
 
-            // Resposta se dados estiverem incompletos
 
             echo json_encode(
 

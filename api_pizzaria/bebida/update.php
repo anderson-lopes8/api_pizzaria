@@ -1,62 +1,58 @@
 <?php
-// Headers
+
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
 header('Access-Control-Allow-Methods: PUT');
 header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
  
 include_once '../../Config/Database.php';
-include_once '../../Models/Pizza.php';
+include_once '../../Models/Bebida.php';
  
 use Apipizza\Config\Database;
-use Apipizza\Models\Pizza;  
+use apiBebida\Models\bebida;  
  
-// Instanciar o banco de dados e conectar
 $database = new Database();
 $db = $database->getConnection();
  
-// Instanciar o objeto Pizza
-$pizza = new Pizza($db);
+$bebida = new bebida ($db);
  
 if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
     try {
-        // Obter os dados postados
         $data = json_decode(file_get_contents("php://input"));
  
         // Verificar se os dados não estão vazios e se o ID foi fornecido
-        if (
+            if (
             !empty($data->id) &&
             !empty($data->nome) &&
-            !empty($data->ingredientes) &&
+            !empty($data->ml) &&
             !empty($data->valor)
         ) {
-            // Atribuir o ID para atualização
-            $pizza->id = $data->id; //é o que vem pelo json
+            $bebida->id = $data->id; //é o que vem pelo json
  
             // Atribuir os demais valores
-            $pizza->nome = $data->nome;
-            $pizza->ingredientes = $data->ingredientes;
-            $pizza->valor = $data->valor;
+            $bebida->nome = $data->nome;
+            $bebida->ml = $data->ml;
+            $bebida->valor = $data->valor;
  
-            // Tentar atualizar a pizza
-            if ($pizza->update()) {
+            // Tentar atualizar a bebida
+            if  ($bebida->update()) {   
                 http_response_code(200);
-                // Resposta de sucesso    
+
                 echo json_encode(
-                    array('Mensagem' => 'Pizza Atualizada com Sucesso')
+                    array('Mensagem' => 'Bebida Atualizada com Sucesso')
                 );
             } else {
                 http_response_code(500);
-                // Resposta de erro
+
                 echo json_encode(
-                    array('Mensagem' => 'Nao foi possivel atualizar a Pizza')
+                    array('Mensagem' => 'Nao foi possivel atualizar a Bebida')
                 );
             }
         } else {
-            // Resposta se dados estiverem incompletos
-            http_response_code(400);
+
+        http_response_code(400);
             echo json_encode(
-                array('Mensagem' => 'Dados Incompletos. Nao foi possivel atualizar a Pizza.')
+                array('Mensagem' => 'Dados Incompletos. Nao foi possivel atualizar a Bebida.')
             );
         }
     } catch (Exception $e) {        

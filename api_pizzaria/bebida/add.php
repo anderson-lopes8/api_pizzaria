@@ -1,7 +1,5 @@
 <?php
 
-// Headers
-
 header('Access-Control-Allow-Origin: *');
 
 header('Content-Type: application/json');
@@ -17,32 +15,21 @@ include_once '../../Models/Bebida.php';
 use Apipizza\Config\Database;
 use Apibebida\Models\Bebida;
 
-
-// Instanciar o banco de dados e conectar
-
 $database = new Database();
 
 $db = $database->getConnection();
 
 
-
-// Instanciar o objeto Bebida
-
 $bebida = new Bebida($db);
-
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     try {
 
-        // Obter os dados postados
 
         $data = json_decode(file_get_contents("php://input"));
 
-
-
-        // Verificar se os dados não estão vazios
 
         if (
 
@@ -54,17 +41,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         ) {
 
-            // Atribuir os valores ao objeto Bebida
 
             $bebida->nome = $data->nome;
 
             $bebida->ml = $data->ml;
 
             $bebida->valor = $data->valor;
-
-
-
-            // Criar a bebida
 
             if ($bebida->add()) {
 

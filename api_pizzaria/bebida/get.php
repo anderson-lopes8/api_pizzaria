@@ -1,13 +1,9 @@
 <?php
-// localhost/apipizzati03/api/pizza/get.php?id=3
-
-// Headers obrigatórios
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
 
 
-// Incluir arquivos de banco de dados e modelo
 include_once  __DIR__ . '/../../Config/Database.php';
 include_once  __DIR__ . '/../../Models/bebida.php';
 
@@ -15,11 +11,9 @@ use  apiPizza\Config\Database;
 use  apiBebida\Models\Bebida;
 
 
-// Instanciar o objeto Database e obter a conexão
 $database = new Database();
 $db = $database->getConnection();
 
-// Instanciar o objeto Bebida
 $bebida = new Bebida($db);
 
 $bebida->id = isset($_GET['id']) ? $_GET['id'] : null;
@@ -40,8 +34,6 @@ try {
                     "valor" => $bebida->valor
                 );
 
-                // Converte para JSON e envia a resposta
-                // `JSON_PRETTY_PRINT` é opcional, mas deixa o JSON mais legível
                 http_response_code(200);
                 echo json_encode($bebida_arr, JSON_PRETTY_PRINT);
             } else {
